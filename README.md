@@ -137,10 +137,10 @@ Detailed visual walkthroughs can be found in PROJECT_SCREENSHOTS.md.
 ---
 
 ## 👨‍💻 Author
-**[Your Name]**
-- **Degree:** B.Tech in Computer Science & Engineering
-- **GitHub:** @yourusername
-- **LinkedIn:** [Your Profile Link]
+**[Bhadraiah meda]**
+- **Degree:** B.Tech in Computer Science & Engineering [aiml]
+- **GitHub:** @bhadraiahmeda
+- **LinkedIn:** [https://www.linkedin.com/in/meda-bhadraiah-23a6483b1/]
 
 ---
 
