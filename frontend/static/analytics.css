@@ -1,0 +1,20 @@
+/* analytics.css – extra styles for analytics page */
+.analytics-stat {
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  text-align: center;
+}
+
+.analytics-stat .num {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.analytics-stat .lbl {
+  color: #64748b;
+  font-size: .85rem;
+  margin-top: 4px;
+}

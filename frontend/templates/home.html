@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Smart Attendance System</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;min-height:100vh;background:#060d1a;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 20%,rgba(99,102,241,.2) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 80%,rgba(59,130,246,.15) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 50% 100%,rgba(139,92,246,.1) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+/* Particles */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.particle{position:absolute;bottom:-20px;border-radius:50%;background:rgba(99,102,241,.4);box-shadow:0 0 8px rgba(99,102,241,.5);animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:.7;}100%{transform:translateY(-110vh) scale(1.3);opacity:0;}}
+
+/* Page wrapper */
+.home-wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;}
+
+/* Badge */
+.ai-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 22px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.35);border-radius:50px;color:#a5b4fc;font-size:.8rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-bottom:20px;}
+
+/* Hero */
+.hero-title{font-size:clamp(2.2rem,6vw,4rem);font-weight:900;background:linear-gradient(135deg,#fff 0%,#a5b4fc 50%,#818cf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-2px;line-height:1.1;}
+.hero-sub{color:#64748b;font-size:1rem;margin-top:10px;}
+
+/* Glass container */
+.glass-wrap{background:rgba(255,255,255,.04);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:36px;width:100%;max-width:1080px;margin-top:44px;}
+
+/* Portal card */
+.portal-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:30px 22px 26px;text-align:center;transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,border-color .35s ease;height:100%;display:flex;flex-direction:column;align-items:center;}
+.portal-card:hover{transform:translateY(-10px) scale(1.02);}
+.portal-card.c-admin:hover  {border-color:rgba(99,102,241,.5); box-shadow:0 20px 50px rgba(99,102,241,.2);}
+.portal-card.c-student:hover{border-color:rgba(16,185,129,.5); box-shadow:0 20px 50px rgba(16,185,129,.2);}
+.portal-card.c-reg:hover    {border-color:rgba(245,158,11,.5); box-shadow:0 20px 50px rgba(245,158,11,.2);}
+.portal-card.c-cam:hover    {border-color:rgba(239,68,68,.5);  box-shadow:0 20px 50px rgba(239,68,68,.2);}
+
+/* Icon */
+.p-icon{width:70px;height:70px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:18px;flex-shrink:0;}
+.p-icon.admin  {background:rgba(99,102,241,.15); color:#818cf8;}
+.p-icon.student{background:rgba(16,185,129,.15); color:#34d399;}
+.p-icon.reg    {background:rgba(245,158,11,.15); color:#fbbf24;}
+.p-icon.cam    {background:rgba(239,68,68,.15);  color:#f87171;}
+
+.p-title{font-size:.98rem;font-weight:700;color:#f1f5f9;margin-bottom:8px;}
+.p-desc {font-size:.8rem;color:#64748b;line-height:1.6;margin-bottom:20px;flex:1;}
+
+/* Portal buttons — these are the actual clickable links */
+.p-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px 16px;border-radius:12px;font-size:.86rem;font-weight:700;text-decoration:none;cursor:pointer;transition:opacity .2s,transform .15s;color:#fff;border:none;}
+.p-btn:hover{opacity:.88;transform:scale(1.03);color:#fff;text-decoration:none;}
+.p-btn.admin-btn  {background:linear-gradient(135deg,#6366f1,#4f46e5);}
+.p-btn.student-btn{background:linear-gradient(135deg,#10b981,#059669);}
+.p-btn.reg-btn    {background:linear-gradient(135deg,#f59e0b,#d97706);}
+.p-btn.cam-btn    {background:linear-gradient(135deg,#ef4444,#dc2626);}
+
+/* Stats strip */
+.stats-strip{display:flex;justify-content:center;gap:48px;margin-top:32px;flex-wrap:wrap;padding-top:28px;border-top:1px solid rgba(255,255,255,.06);}
+.s-stat .snum{font-size:1.5rem;font-weight:800;color:#f1f5f9;}
+.s-stat .slbl{font-size:.72rem;color:#475569;text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+
+.home-footer{color:#334155;font-size:.76rem;margin-top:36px;}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="home-wrap">
+
+  <div class="text-center">
+    <div class="ai-badge"><i class="fa-solid fa-microchip"></i> Powered by Artificial Intelligence</div>
+    <h1 class="hero-title">AI Smart Attendance</h1>
+    <p class="hero-sub">Face Recognition &nbsp;·&nbsp; Real-time Detection &nbsp;·&nbsp; Automated Emails</p>
+  </div>
+
+  <div class="glass-wrap">
+    <div class="row g-4">
+
+      <div class="col-md-6 col-lg-3">
+        <div class="portal-card c-admin">
+          <div class="p-icon admin"><i class="fa-solid fa-user-shield"></i></div>
+          <div class="p-title">Admin Portal</div>
+          <div class="p-desc">Full control — manage students, view analytics, download reports and configure the system.</div>
+          <a href="/login" class="p-btn admin-btn"><i class="fa-solid fa-right-to-bracket"></i> Admin Login</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="portal-card c-student">
+          <div class="p-icon student"><i class="fa-solid fa-user-graduate"></i></div>
+          <div class="p-title">Student Portal</div>
+          <div class="p-desc">View your attendance records, percentage, history and receive email notifications.</div>
+          <a href="/student_login" class="p-btn student-btn"><i class="fa-solid fa-right-to-bracket"></i> Student Login</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="portal-card c-reg">
+          <div class="p-icon reg"><i class="fa-solid fa-user-plus"></i></div>
+          <div class="p-title">Register Student</div>
+          <div class="p-desc">Enroll yourself — enter your details, provide email and capture 20 face images.</div>
+          <a href="/register" class="p-btn reg-btn"><i class="fa-solid fa-camera"></i> Register Now</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="portal-card c-cam">
+          <div class="p-icon cam"><i class="fa-solid fa-video"></i></div>
+          <div class="p-title">Live Attendance</div>
+          <div class="p-desc">Start live face recognition, auto-mark attendance and send present/absent emails.</div>
+          <a href="/live_camera" class="p-btn cam-btn"><i class="fa-solid fa-circle-dot"></i> Start Camera</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="stats-strip">
+      <div class="s-stat text-center"><div class="snum">AI</div><div class="slbl">Face Recognition</div></div>
+      <div class="s-stat text-center"><div class="snum">99%</div><div class="slbl">Accuracy</div></div>
+      <div class="s-stat text-center"><div class="snum">Real-time</div><div class="slbl">Detection</div></div>
+      <div class="s-stat text-center"><div class="snum">Auto</div><div class="slbl">Email Alerts</div></div>
+    </div>
+  </div>
+
+  <div class="home-footer">&copy; 2024 AI Smart Attendance System &mdash; Built with Flask &amp; Face Recognition</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const c=document.getElementById("particles");
+for(let i=0;i<40;i++){const p=document.createElement("div");p.className="particle";const s=Math.random()*5+2;p.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s}px;animation-duration:${Math.random()*18+10}s;animation-delay:${Math.random()*12}s;opacity:${Math.random()*.5+.2}`;c.appendChild(p);}
+</script>
+</body>
+</html>

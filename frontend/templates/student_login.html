@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login – AI Attendance</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;min-height:100vh;background:#060d1a;display:flex;align-items:center;justify-content:center;padding:20px;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 60% at 15% 30%,rgba(16,185,129,.2) 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 85% 70%,rgba(16,185,129,.12) 0%,transparent 55%);pointer-events:none;}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;}
+
+.card{position:relative;z-index:1;width:100%;max-width:440px;background:rgba(255,255,255,.05);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:48px 40px;box-shadow:0 32px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);text-align:center;}
+
+.logo-box{width:76px;height:76px;border-radius:20px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#34d399;margin:0 auto 20px;}
+h2{font-size:1.6rem;font-weight:800;color:#f1f5f9;letter-spacing:-.3px;}
+.sub{color:#475569;font-size:.86rem;margin-top:5px;margin-bottom:26px;}
+
+.err-box{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;border-radius:12px;padding:10px 14px;font-size:.83rem;margin-bottom:18px;text-align:left;}
+
+.field{position:relative;margin-bottom:14px;}
+.field i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#475569;font-size:.88rem;pointer-events:none;}
+.field input{width:100%;padding:14px 16px 14px 44px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:#f1f5f9;font-size:.93rem;font-family:inherit;outline:none;transition:border-color .25s,box-shadow .25s;}
+.field input::placeholder{color:#334155;}
+.field input:focus{background:rgba(255,255,255,.09);border-color:rgba(16,185,129,.6);box-shadow:0 0 0 3px rgba(16,185,129,.12);}
+
+.submit-btn{width:100%;padding:14px;margin-top:8px;border:none;border-radius:12px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:.96rem;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .2s,transform .2s;box-shadow:0 8px 24px rgba(16,185,129,.3);display:flex;align-items:center;justify-content:center;gap:8px;}
+.submit-btn:hover{opacity:.88;transform:translateY(-2px);}
+
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#1e293b;font-size:.78rem;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.07);}
+
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:#475569;font-size:.84rem;text-decoration:none;transition:color .2s;}
+.back-btn:hover{color:#34d399;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo-box"><i class="fa-solid fa-user-graduate"></i></div>
+  <h2>Student Login</h2>
+  <p class="sub">AI Smart Attendance System</p>
+
+  {% if error %}
+  <div class="err-box"><i class="fa-solid fa-circle-exclamation me-2"></i>{{ error }}</div>
+  {% endif %}
+
+  <form method="POST" action="/student_login">
+    <div class="field">
+      <i class="fa-solid fa-id-card"></i>
+      <input type="text" name="student_id" placeholder="Student ID" required>
+    </div>
+    <div class="field" style="margin-bottom:20px;">
+      <i class="fa-solid fa-lock"></i>
+      <input type="password" name="password" placeholder="Password" required>
+    </div>
+    <button type="submit" class="submit-btn">
+      <i class="fa-solid fa-right-to-bracket"></i> View My Attendance
+    </button>
+  </form>
+
+  <div class="divider">or</div>
+  <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+</div>
+</body>
+</html>

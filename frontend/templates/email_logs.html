@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Logs – AI Attendance</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='dashboard.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="dash-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-brain"></i></div>
+      <div><div class="brand-text">AI Attend</div><div class="brand-ver">v2.0 Admin</div></div>
+    </div>
+    <nav>
+      <a href="/dashboard"           class="nav-link"><span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>Dashboard</a>
+      <a href="/register"            class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-plus"></i></span>Register Student</a>
+      <a href="/students"            class="nav-link"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>View Students</a>
+      <a href="/analytics"           class="nav-link"><span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span>Analytics</a>
+      <a href="/settings"            class="nav-link"><span class="nav-icon"><i class="fa-solid fa-gear"></i></span>Settings</a>
+      <a href="/admin/email_logs"     class="nav-link active"><span class="nav-icon"><i class="fa-solid fa-envelope"></i></span>Email Logs</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="/logout" class="nav-link nav-logout"><span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>Logout</a>
+    </div>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-topbar">
+      <div>
+        <div class="topbar-title">Email Logs</div>
+        <div class="topbar-sub">View all sent and failed email delivery attempts</div>
+      </div>
+    </div>
+
+    {% if not email_configured %}
+    <div class="panel" style="margin-bottom:20px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:16px;padding:20px;">
+      <div style="color:#f87171;font-weight:600;margin-bottom:8px;"><i class="fa-solid fa-triangle-exclamation me-2"></i>Email Not Configured</div>
+      <p style="color:#fca5a5;font-size:.9rem;margin:0;">EMAIL_SENDER and EMAIL_PASSWORD in <code>.env</code> are still placeholders. Update them with real credentials to enable email delivery.</p>
+    </div>
+    {% endif %}
+
+    <div class="panel" style="position:relative;z-index:1;">
+      <div class="panel-header"><i class="fa-solid fa-envelope me-2" style="color:#818cf8;"></i>Recent Email Activity</div>
+      <div style="overflow-x:auto;">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>To</th>
+              <th>Subject</th>
+              <th>Status</th>
+              <th>Error</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for log in logs %}
+            <tr>
+              <td style="color:#cbd5e1;font-size:.85rem;">{{ log.time }}</td>
+              <td style="color:#cbd5e1;font-size:.85rem;">{{ log.to }}</td>
+              <td style="color:#cbd5e1;font-size:.85rem;">{{ log.subject[:40] }}{% if log.subject|length > 40 %}...{% endif %}</td>
+              <td>
+                {% if log.status == 'SENT' %}
+                <span style="background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#34d399;padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:700;">✓ {{ log.status }}</span>
+                {% elif 'ERROR' in log.status or 'FAILED' in log.status %}
+                <span style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#f87171;padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:700;">✗ {{ log.status }}</span>
+                {% else %}
+                <span style="background:rgba(251,146,60,.15);border:1px solid rgba(251,146,60,.3);color:#fb923c;padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:700;">{{ log.status }}</span>
+                {% endif %}
+              </td>
+              <td style="color:#64748b;font-size:.8rem;word-break:break-all;">{{ log.error[:60] }}{% if log.error|length > 60 %}...{% endif %}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" style="text-align:center;color:#334155;padding:32px 0;">No email logs yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel mt-4" style="position:relative;z-index:1;">
+      <div class="panel-header"><i class="fa-solid fa-bug me-2" style="color:#818cf8;"></i>Troubleshooting</div>
+      <div style="padding:24px;color:#cbd5e1;font-size:.9rem;">
+        <p><strong>No emails being sent?</strong></p>
+        <ul style="margin-bottom:16px;">
+          <li>Verify EMAIL_SENDER and EMAIL_PASSWORD in <code>.env</code> are correct (not placeholders)</li>
+          <li>For Gmail: use an <strong>App Password</strong> (not regular password) if 2FA is enabled</li>
+          <li>Ensure students have valid email addresses in their profile</li>
+          <li>Check this log for error messages</li>
+        </ul>
+        <p><strong>Quick test:</strong> Go to <a href="/settings" style="color:#818cf8;">Settings</a> and click "Send Test Email"</p>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
